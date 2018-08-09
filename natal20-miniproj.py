@@ -11,24 +11,27 @@ import random #We'll need this later in the lab
 
 turtle.tracer(1,0) #This helps the turtle move more smoothly
 
-SIZE_X=800
-SIZE_Y=500
-turtle.setup(SIZE_X, SIZE_Y) #Curious? It's the turtle window  
+SIZE_X=400
+SIZE_Y=285
+
+turtle.setup(1000,1000) #Curious? It's the turtle window  
                              #size. 
 turtle.penup()
 
 SQUARE_SIZE = 20
-START_LENGTH = 6
+START_LENGTH = 1
 
 #Initialize lists
 pos_list = []
 stamp_list = []
 food_pos = []
 food_stamps = []
-
+score = 0
 #Set up positions (x,y) of boxes that make up the snake
 snake = turtle.clone()
-snake.shape("square")
+#snake.shape("circle")
+turtle.register_shape("astronaut.gif")
+snake.shape("astronaut.gif")
 
 #Hide the turtle object (it's an arrow - we don't need to see it)
 turtle.hideturtle()
@@ -80,6 +83,29 @@ UP_EDGE = 250
 DOWN_EDGE = -250
 RIGHT_EDGE = 400
 LEFT_EDGE = -400
+
+
+
+border = turtle.Turtle()
+border.pencolor("black")
+border.penup()
+border.goto(RIGHT_EDGE,UP_EDGE)
+border.pendown()
+border.goto(RIGHT_EDGE,DOWN_EDGE)
+border.goto(LEFT_EDGE,DOWN_EDGE)
+border.goto(LEFT_EDGE,UP_EDGE)
+border.goto(RIGHT_EDGE,UP_EDGE)
+border.hideturtle()
+
+title=border.clone()
+title.penup()
+title.goto(0,300)
+title.pendown()
+title.write("SNAKE GAME", align="center", font=("arial", 50 , "normal"))
+border.penup()
+border.goto(0,-500)
+border.pendown()
+border.write(str(score), align="center", font =("arial", 50 , "normal"))
 
 def up():
     global direction #snake direction is global (same everywhere)
@@ -190,7 +216,7 @@ def move_snake():
     ######## SPECIAL PLACE - Remember it for Part 5
     #pop zeroth element in pos_list to get rid of last the last 
     #piece of the tail
-    global food_stamps, food_pos
+    global food_stamps, food_pos, score
     #If snake is on top of food item
     if snake.pos() in food_pos:
         food_ind=food_pos.index(snake.pos()) #What does this do?
@@ -199,6 +225,9 @@ def move_snake():
         food_pos.pop(food_ind) #Remove eaten food position
         food_stamps.pop(food_ind) #Remove eaten food stamp
         print("You have eaten the food!")
+        score = score + 1
+        border.clear()
+        border.write(str(score), align="center", font =("arial", 50 , "normal"))
         
     else:
         old_stamp = stamp_list.pop(0)
@@ -216,15 +245,20 @@ def move_snake():
 
 
 
+turtle.register_shape("glaxy.gif")
 
-turtle.register_shape("trash.gif") #Add trash picture
+turtle.bgpic("glaxy.gif")
+
+
+
+
+turtle.register_shape("planet.gif") #Add trash picture
                       # Make sure you have downloaded this shape 
                       # from the Google Drive folder and saved it
                       # in the same folder as this Python script
 
 food = turtle.clone()
-food.shape("trash.gif") 
-
+food.shape("planet.gif")
 #Locations of food
 #food_pos = [(100,100), (-100,100), (-100,-100), (100,-100)]
 food_stamps = []
